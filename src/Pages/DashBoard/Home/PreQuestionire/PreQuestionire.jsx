@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import school from '../../../../assets/Testimg/Group 109985.png'
-import school2 from '../../../../assets/Testimg/collage.png'
-import student from '../../../../assets/Testimg/studentyes.svg'
-import student2 from '../../../../assets/Testimg/studentno2.svg'
+import school from '../../../../assets/Testimg/school.png'
+import collage from '../../../../assets/Testimg/collage.png'
+import student from '../../../../assets/Testimg/studentyeYes.svg'
+import studentNo from '../../../../assets/Testimg/studentNo.svg'
 import  looking from '../../../../assets/Testimg/lookingjob.png'
-import job from '../../../../assets/Testimg/working.svg'
+import job from '../../../../assets/Testimg/working.png'
 import style from './PreQuestionire.module.css'
 const PreQuestionire = () => {
   const [shouldShowSelectError, setShouldShowSelectError] = useState(false);
@@ -109,6 +109,8 @@ const PreQuestionire = () => {
 
     setSearchKeyResults([]);
   };
+
+  console.log(workAs);
   return (
     <form
       action=""
@@ -135,7 +137,7 @@ const PreQuestionire = () => {
                   Are you Currently Studying ?
                 </label>
                 <div className=" md:flex md:justify-between">
-                  <div className="md:flex md:items-center">
+                  <div className={`${currentlyStuying === "true" && "shadow-md"} md:flex md:items-center`}>
 
                     <label htmlFor="isStudying" className="ml-2">
                       <input
@@ -153,7 +155,7 @@ const PreQuestionire = () => {
                       <img src={student} className="md:mx-0 mx-auto" alt="" />
                     </label>
                   </div>
-                  <div className="md:flex md:items-center">
+                  <div className={`${currentlyStuying === "false" && "shadow-md"} md:flex md:items-center`}>
 
                     <label htmlFor="isNotStudying" className="ml-2">
                       <input
@@ -168,7 +170,7 @@ const PreQuestionire = () => {
                         name="isStudying"
                         value="false"
                       />
-                      <img className="md:mx-0 mx-auto" src={student2} alt="" />
+                      <img className="md:mx-0 mx-auto" src={studentNo} alt="" />
                     </label>
                   </div>
                 </div>
@@ -184,12 +186,12 @@ const PreQuestionire = () => {
                 {/* if currently studying then get data for they are school student or cllage student   */}
 
                 <div
-                  className={` my-2  ${currentlyStuying === "true" ? "block" : "hidden"
+                  className={` my-2  ${currentlyStuying === "true"  ? "block " : "hidden"
                     }`}
                 >
-                  <label className="titleSub text-center mb-5">Are you currently ?</label>
+                  <label className={`${style.titleSub} text-center mb-5`}>Are you currently ?</label>
                   <div className="md:flex md:justify-between">
-                    <div className="md:flex md:items-center ">
+                    <div className={`md:flex md:items-center ${workAs === 'schoolStudent' ? 'shadow-md' : ''} `}>
 
                       <label htmlFor="schoolStudent" className="ml-2">
                         <input
@@ -207,7 +209,7 @@ const PreQuestionire = () => {
                         <img className="md:mx-0 mx-auto" src={school} alt="" />
                       </label>
                     </div>
-                    <div className="md:flex md:items-center">
+                    <div className={`md:flex md:items-center ${workAs === 'collageStudent' ? 'shadow-md' : ''} `}>
 
                       <label htmlFor="collageStudent" className="ml-2">
                         <input
@@ -222,7 +224,7 @@ const PreQuestionire = () => {
                           name="workAs"
                           value="collageStudent"
                         />
-                        <img className="md:mx-0 mx-auto" src={school2} alt="" />
+                        <img className="md:mx-0 mx-auto" src={collage} alt="" />
                       </label>
                     </div>
                   </div>
@@ -239,10 +241,10 @@ const PreQuestionire = () => {
                   className={` my-2 ${currentlyStuying === "false" ? "block" : "hidden"
                     }`}
                 >
-                  <label className="titleSub text-center mb-5">Are you currently?</label>
+                  <label className={` ${style.titleSub} text-center mb-5`}>Are you currently?</label>
 
                   <div className="md:flex md:justify-between">
-                    <div className="md:flex md:items-center ">
+                    <div className={`md:flex md:items-center ${workAs === 'jobSeeker' ? 'shadow-md' : ''} `}>
 
                       <label htmlFor="jobSeeker" className="ml-2">
                         <input
@@ -260,7 +262,7 @@ const PreQuestionire = () => {
                         <img className="md:mx-0 mx-auto" src={looking} alt="" />
                       </label>
                     </div>
-                    <div className="md:flex md:items-center ">
+                    <div className={`md:flex md:items-center ${workAs === 'jobHolder' ? 'shadow-md' : ''} `}>
 
                       <label htmlFor="jobHolder" className="ml-2">
                         <input
@@ -360,20 +362,20 @@ const PreQuestionire = () => {
               {/* if currently studying and collage student or  (currently not studying and looking for job) or (optional => (currently not studying and already in working)) then go for collage Name , latest degree and graduation year */}
 
               <div
-                className={`textpart ${(workAs === "collageStudent" &&
+                className={`${style.textpart} ${(workAs === "collageStudent" &&
                   currentlyStuying === "true") ||
                   (workAs === "jobSeeker" && currentlyStuying === "false")
                   ? "block"
                   : "hidden"
                   }`}
               >
-                <div>
+                <div className=" relative ">
                   <div className=" mb-5">
                     <label
-                      className="titleSub "
+                      className={`${style.titleSub}`} 
                       htmlFor="coLLageName"
                     >
-                      collage Name
+                      Collage Name
                     </label>
 
                     <input
@@ -406,7 +408,7 @@ const PreQuestionire = () => {
                   </div>
 
                   {searchKeyResults?.length !== 0 && (
-                    <div className=" absolute w-full pr-2 md:max-w-md lg:max-w-lg mx-auto   h-full max-h-80 overflow-y-auto  z-20  flex flex-col items-center">
+                    <div className=" absolute w-full pr-2 md:max-w-md lg:max-w-lg mx-auto   max-h-80 overflow-y-auto  z-20  flex flex-col items-center">
                       <div className="bg-white border-green-400 w-full border-4  border-t-0 ">
                         {/* px should be zero after 450 width  */}
                         {/* ${styles.textsearchresponsive} */}
@@ -434,7 +436,7 @@ const PreQuestionire = () => {
                 <div className="my-2 mb-5">
                   <div className="">
                     <label
-                      className="titleSub"
+                      className={`${style.titleSub}`} 
                       htmlFor="latestDegree"
                     >
                       Select your latest degree
@@ -470,7 +472,7 @@ const PreQuestionire = () => {
                 <div className="my-2  mb-5">
                   <div className="">
                     <label
-                      className="titleSub"
+                      className={`${style.titleSub}`} 
                       htmlFor="graduationYear"
                     >
                       Select your graduation year
@@ -516,13 +518,13 @@ const PreQuestionire = () => {
 
               {/* if currently not studying and already in working then n go for ( optional ==> (collage Name , latest degree aand graduation year)) company name, works of experience, occption  */}
               <div
-                className={`textpart ${workAs === "jobHolder" && currentlyStuying === "false"
+                className={`${style.textpart} ${workAs === "jobHolder" && currentlyStuying === "false"
                   ? "block"
                   : "hidden"
                   }`}
               >
                 <div className="my-2  mb-5">
-                  <label className="titleSub" htmlFor="companyName">
+                  <label className={`${style.titleSub}`}  htmlFor="companyName">
                     company Name
                   </label>
                   <input
@@ -551,7 +553,7 @@ const PreQuestionire = () => {
                 <div className="my-2 mb-5">
                   <div className="">
                     <label
-                      className="titleSub"
+                      className={`${style.titleSub}`} 
                       htmlFor="yearsOfExperience"
                     >
                       Select your experience
@@ -596,7 +598,7 @@ const PreQuestionire = () => {
                 <div className="my-2 mb-5">
                   <div className="">
                     <label
-                      className="titleSub"
+                      className={`${style.titleSub}`} 
                       htmlFor="currentJobTitle"
                     >
                       Select your job title
